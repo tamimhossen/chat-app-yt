@@ -14,6 +14,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //run when the client connects
 io.on('connection', socket => {
     console.log('New WS Connection');
+
+    //welcome current user
     socket.emit('message', 'welcome to chat');
 
     //broadcast when user connects
@@ -22,6 +24,11 @@ io.on('connection', socket => {
     //run when user disconnect
     socket.on('disconnect', () => {
         io.emit('message', 'A user has left the chat');
+    })
+
+    //listen to chatMesage
+    socket.on('chatMessage', (msg) => {
+        io.emit( 'message', msg)
     })
 
 })
